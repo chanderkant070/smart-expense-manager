@@ -19,8 +19,10 @@ function db(): PDO {
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $opts);
     } catch (PDOException $ex) {
         http_response_code(500);
-        exit('<h3>Database connection failed</h3><p>Check that MySQL is running, the database <b>'
-            . htmlspecialchars(DB_NAME) . '</b> exists, and the settings in includes/config.php are right.</p>');
+        exit('<h3>Database connection failed</h3><p>' . htmlspecialchars($ex->getMessage()) . '</p>'
+            . '<p>Host: ' . htmlspecialchars(DB_HOST) . ' | Port: ' . htmlspecialchars(DB_PORT)
+            . ' | Database: ' . htmlspecialchars(DB_NAME) . ' | User: ' . htmlspecialchars(DB_USER)
+            . ' | SSL: ' . (DB_SSL ? 'on' : 'off') . '</p>');
     }
 
     // First run: create the tables automatically.
